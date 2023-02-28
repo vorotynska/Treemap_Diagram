@@ -65,6 +65,42 @@ document.addEventListener('DOMContentLoaded', (e) => {
             treemap(root)
             console.log(data)
 
+
+            let mouseOver = function (e, d) {
+
+                d3.selectAll("rect")
+                    .transition()
+                    .duration(200)
+                    .style("opacity", .5)
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 1)
+                    .style("stroke", "black");
+                tooltip.style("visibility", "visible")
+                    .style("left", e.pageX + 10 + "px")
+                    .style("top", e.pageY - 80 + "px")
+                    .html(
+                        'Name: ' + d.data.name +
+                        '<br>Category: ' + d.data.category +
+                        '<br>Value: ' + d.data.value
+                    )
+                    .attr('data-value', d.data.value)
+            }
+
+            let mouseLeave = function (d) {
+                d3.selectAll(".rect")
+                    .transition()
+                    .duration(200)
+                    .style("opacity", .9)
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("stroke", "transparent");
+                tooltip
+                    .style('visibility', 'hidden')
+            }
+
             let cell = svg.selectAll('g')
                 .data(root.leaves())
                 .enter().append('g')
@@ -97,6 +133,8 @@ document.addEventListener('DOMContentLoaded', (e) => {
                 .attr('fill', (d) => {
                     return color(d.data.category)
                 })
+                .on("mouseover", mouseOver)
+                .on("mouseleave", mouseLeave)
 
 
 
