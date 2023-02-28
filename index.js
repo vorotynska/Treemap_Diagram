@@ -65,13 +65,26 @@ document.addEventListener('DOMContentLoaded', (e) => {
             treemap(root)
             console.log(data)
 
+            const mouseOver = function (e, d) {
+                d3.selectAll("rect")
+                    .transition()
+                    .duration(200)
+                    .style("opacity", .7)
+                d3.select(this)
+                    .transition()
+                    .duration(200)
+                    .style("opacity", 1)
+                    .style("stroke", "black")
+                tooltip
+                    .style("opacity", 1)
+            }
 
-            let mouseOver = function (e, d) {
+            let mouseMove = function (e, d) {
 
                 d3.selectAll("rect")
                     .transition()
                     .duration(200)
-                    .style("opacity", .5)
+                    .style("opacity", .7)
                 d3.select(this)
                     .transition()
                     .duration(200)
@@ -92,10 +105,11 @@ document.addEventListener('DOMContentLoaded', (e) => {
                 d3.selectAll(".rect")
                     .transition()
                     .duration(200)
-                    .style("opacity", .9)
+                    .style("opacity", 1)
                 d3.select(this)
                     .transition()
                     .duration(200)
+                    .style('opacity', 1)
                     .style("stroke", "transparent");
                 tooltip
                     .style('visibility', 'hidden')
@@ -134,6 +148,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
                     return color(d.data.category)
                 })
                 .on("mouseover", mouseOver)
+                .on("mousemove", mouseMove)
                 .on("mouseleave", mouseLeave)
 
 
